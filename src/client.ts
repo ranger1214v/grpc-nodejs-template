@@ -13,7 +13,7 @@ async function main() {
         string: 'db_path'
     });
 
-    console.log('argv!! => ', argv);
+    // console.log('argv!! => ', argv);
 
     const PROTO_PATH = path.join(__dirname, './protos/action.proto');
     const packageDefinition = protoLoader.loadSync(
@@ -27,7 +27,7 @@ async function main() {
         });
     const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
 
-    const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials.createInsecure());
+    const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials.createSsl());
 
     switch (argv.action) {
         case 'ClientStreamingAddItem': // ok 

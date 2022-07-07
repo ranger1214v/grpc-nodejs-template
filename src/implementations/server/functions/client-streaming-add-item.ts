@@ -10,6 +10,6 @@ export const ClientStreamingAddItem = async (call: ServerWritableStream<Item>, c
 
     call.on('end', () => {
         console.log('ClientStreamingAddItem => 連線結束');
-        callback(null, {});
+        callback(null, {message:'good bye'});
     })
 }

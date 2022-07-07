@@ -13,7 +13,7 @@ export const ServerStreamingSubList = async (call: ServerWritableStream<Filter>)
 
     const destroy$ = new Subject();
 
-    console.log('serverStreamingSubList =>', call.request);
+    // console.log('serverStreamingSubList =>', call.request);
 
     for (const item of list) {
         call.write(item);
@@ -22,13 +22,13 @@ export const ServerStreamingSubList = async (call: ServerWritableStream<Filter>)
     messageItem$.pipe(
         takeUntil(destroy$),
     ).subscribe(item => {
-        console.log('item!! =>', item);
+        // console.log('item!! =>', item);
         call.write(item);
     });
 
 
     call.on('close', () => { // 連線關閉時 取消訂閱
-        console.log('close!!');
+        // console.log('close!!');
         destroy$.next();
         destroy$.complete();
     });
