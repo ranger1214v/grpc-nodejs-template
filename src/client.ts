@@ -6,6 +6,7 @@ import { ClientStreamingAddItem } from './implementations/client/functions/clien
 import { ServerStreamingSubList } from './implementations/client/functions/server-streaming-sub-list';
 import { BidirectionalStreamingAsyncList } from './implementations/client/functions/bidirectional-streaming';
 import { UnaryAddItem } from './implementations/client/functions/unary-add-item';
+import { ClientStreamingCalculate } from './implementations/client/functions/client-streaming-calculate';
 
 async function main() {
 
@@ -27,22 +28,27 @@ async function main() {
         });
     const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
 
-    const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials.createSsl());
+    const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials
+    .createSsl());
 
     switch (argv.action) {
-        case 'ClientStreamingAddItem': // ok 
+        case 'ClientStreamingAddItem':
             await ClientStreamingAddItem(client);
             break;
 
-        case 'ServerStreamingSubList': // ok 類似訂閱
+        case 'ClientStreamingCalculate':
+            await ClientStreamingCalculate(client);
+            break;
+
+        case 'ServerStreamingSubList':
             await ServerStreamingSubList(client);
             break;
 
-        case 'BidirectionalStreamingAsyncList': // ok 雙向訂閱 行爲類似 websocket
+        case 'BidirectionalStreamingAsyncList':
             await BidirectionalStreamingAsyncList(client);
             break;
 
-        case 'UnaryAddItem': // ok
+        case 'UnaryAddItem':
         default:
             await UnaryAddItem(client, argv);
     }

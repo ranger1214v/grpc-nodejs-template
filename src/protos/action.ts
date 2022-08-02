@@ -2,7 +2,7 @@
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
-import { Empty } from "../google/protobuf/empty";
+import { Empty } from "./google/protobuf/empty";
 import { map } from "rxjs/operators";
 
 export const protobufPackage = "AiiiGRPC";
@@ -20,11 +20,15 @@ export interface List {
 export interface Filter {
   name: string;
   price: number;
-  opStr: '==' | '>=' | '<=' | '';
+  opStr: string;
+}
+
+export interface Calculate {
+  data: string;
 }
 
 function createBaseItem(): Item {
-  return { name: "", price: 0, message:"" };
+  return { name: "", price: 0, message: "" };
 }
 
 export const Item = {
@@ -36,7 +40,7 @@ export const Item = {
       writer.uint32(16).int32(message.price);
     }
     if (message.message !== "") {
-      writer.uint32(10).string(message.message);
+      writer.uint32(26).string(message.message);
     }
     return writer;
   },
@@ -53,6 +57,9 @@ export const Item = {
           break;
         case 2:
           message.price = reader.int32();
+          break;
+        case 3:
+          message.message = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -74,14 +81,15 @@ export const Item = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.price !== undefined && (obj.price = Math.round(message.price));
+    message.message !== undefined && (obj.message = message.message);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Item>, I>>(object: I): Item {
     const message = createBaseItem();
     message.name = object.name ?? "";
-    message.message = object.message ?? "";
     message.price = object.price ?? 0;
+    message.message = object.message ?? "";
     return message;
   },
 };
@@ -176,7 +184,7 @@ export const Filter = {
           message.price = reader.int32();
           break;
         case 3:
-          message.opStr = reader.string() as Filter['opStr'];
+          message.opStr = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -190,7 +198,7 @@ export const Filter = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       price: isSet(object.price) ? Number(object.price) : 0,
-      opStr: (isSet(object.opStr) ? String(object.opStr) : "") as Filter['opStr'],
+      opStr: isSet(object.opStr) ? String(object.opStr) : "",
     };
   },
 
@@ -211,11 +219,66 @@ export const Filter = {
   },
 };
 
+function createBaseCalculate(): Calculate {
+  return { data: "" };
+}
+
+export const Calculate = {
+  encode(
+    message: Calculate,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.data !== "") {
+      writer.uint32(10).string(message.data);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Calculate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCalculate();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.data = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Calculate {
+    return {
+      data: isSet(object.data) ? String(object.data) : "",
+    };
+  },
+
+  toJSON(message: Calculate): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = message.data);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Calculate>, I>>(
+    object: I
+  ): Calculate {
+    const message = createBaseCalculate();
+    message.data = object.data ?? "";
+    return message;
+  },
+};
+
 export interface ToDoService {
   UnaryAddItem(request: Item): Promise<List>;
   ClientStreamingAddItem(request: Observable<Item>): Promise<Empty>;
   ServerStreamingSubList(request: Filter): Observable<Item>;
   BidirectionalStreamingAsyncList(request: Observable<Item>): Observable<List>;
+  ClientStreamingCalculate(request: Observable<Calculate>): Promise<Calculate>;
 }
 
 export class ToDoServiceClientImpl implements ToDoService {
@@ -227,27 +290,26 @@ export class ToDoServiceClientImpl implements ToDoService {
     this.ServerStreamingSubList = this.ServerStreamingSubList.bind(this);
     this.BidirectionalStreamingAsyncList =
       this.BidirectionalStreamingAsyncList.bind(this);
+    this.ClientStreamingCalculate = this.ClientStreamingCalculate.bind(this);
   }
-  async UnaryAddItem(request: Item): Promise<List> {
+  UnaryAddItem(request: Item): Promise<List> {
     const data = Item.encode(request).finish();
     const promise = this.rpc.request(
       "AiiiGRPC.ToDoService",
       "UnaryAddItem",
       data
     );
-    const data_1 = await promise;
-    return List.decode(new _m0.Reader(data_1));
+    return promise.then((data) => List.decode(new _m0.Reader(data)));
   }
 
-  async ClientStreamingAddItem(request: Observable<Item>): Promise<Empty> {
+  ClientStreamingAddItem(request: Observable<Item>): Promise<Empty> {
     const data = request.pipe(map((request) => Item.encode(request).finish()));
     const promise = this.rpc.clientStreamingRequest(
       "AiiiGRPC.ToDoService",
       "ClientStreamingAddItem",
       data
     );
-    const data_1 = await promise;
-    return Empty.decode(new _m0.Reader(data_1));
+    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
   }
 
   ServerStreamingSubList(request: Filter): Observable<Item> {
@@ -268,6 +330,18 @@ export class ToDoServiceClientImpl implements ToDoService {
       data
     );
     return result.pipe(map((data) => List.decode(new _m0.Reader(data))));
+  }
+
+  ClientStreamingCalculate(request: Observable<Calculate>): Promise<Calculate> {
+    const data = request.pipe(
+      map((request) => Calculate.encode(request).finish())
+    );
+    const promise = this.rpc.clientStreamingRequest(
+      "AiiiGRPC.ToDoService",
+      "ClientStreamingCalculate",
+      data
+    );
+    return promise.then((data) => Calculate.decode(new _m0.Reader(data)));
   }
 }
 
@@ -317,9 +391,9 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin
   ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
-    Exclude<keyof I, KeysOfUnion<P>>,
-    never
-  >;
+        Exclude<keyof I, KeysOfUnion<P>>,
+        never
+      >;
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.

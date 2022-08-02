@@ -10,6 +10,6 @@
  ```  
 npm run start:client -- --action=UnaryAddItem \
 --name=ranger  \
---price=0  \
---message=testMessage
+--message=6666 \
+--host=node-grpc-dnz3lqp74q-de.a.run.app
 ```
