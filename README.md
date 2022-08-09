@@ -11,5 +11,5 @@
 npm run start:client -- --action=UnaryAddItem \
 --name=ranger  \
 --message=6666 \
---host=node-grpc-dnz3lqp74q-de.a.run.app
+--host=0.0.0.0:433
 ```

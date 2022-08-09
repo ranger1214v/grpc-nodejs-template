@@ -5,7 +5,7 @@
     "scripts": {
         "start:server": "node lib/server.js",
         "start:client": "node lib/client.js",
-        "build": "tsc && copyfiles -u 1 src/protos/** lib/src/",
+        "build": "copyfiles -u 1 src/protos/** lib/src/ && tsc",
         "copy": "copyfiles -u 1 src/protos/** lib/src/"
     },
     "author": "",

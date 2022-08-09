@@ -29,7 +29,8 @@ async function main() {
     const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
 
     const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials
-    .createSsl());
+    .createInsecure());
+    // .createSsl());
 
     switch (argv.action) {
         case 'ClientStreamingAddItem':
