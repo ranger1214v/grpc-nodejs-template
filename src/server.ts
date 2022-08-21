@@ -4,11 +4,13 @@ import * as grpc from 'grpc';
 import * as protoLoader from '@grpc/proto-loader';
 import * as toDoServiceImplementations from './implementations/server/todoService';
 import { environment } from './environments/environment';
+import { addReflection } from 'grpc-server-reflection'
 
 async function main() {
 
     const server = new grpc.Server();
-
+    addReflection(server, 'src/protos/descriptor_set.bin');
+    
     const PROTO_PATH = path.join(__dirname, './protos/action.proto');
     const packageDefinition = protoLoader.loadSync(
         PROTO_PATH,

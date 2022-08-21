@@ -4,13 +4,16 @@
  * @public
  */
 
+// GENERATED CODE -- DO NOT EDIT!
+
+
 /* eslint-disable */
 // @ts-nocheck
 
 
 import * as grpcWeb from 'grpc-web';
 
-import * as src_protos_action_pb from '../../src/protos/action_pb';
+import * as action_pb from './action_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
@@ -36,29 +39,29 @@ export class ToDoServiceClient {
   methodDescriptorUnaryAddItem = new grpcWeb.MethodDescriptor(
     '/AiiiGRPC.ToDoService/UnaryAddItem',
     grpcWeb.MethodType.UNARY,
-    src_protos_action_pb.Item,
-    src_protos_action_pb.List,
-    (request: src_protos_action_pb.Item) => {
+    action_pb.Item,
+    action_pb.List,
+    (request: action_pb.Item) => {
       return request.serializeBinary();
     },
-    src_protos_action_pb.List.deserializeBinary
+    action_pb.List.deserializeBinary
   );
 
   unaryAddItem(
-    request: src_protos_action_pb.Item,
-    metadata: grpcWeb.Metadata | null): Promise<src_protos_action_pb.List>;
+    request: action_pb.Item,
+    metadata: grpcWeb.Metadata | null): Promise<action_pb.List>;
 
   unaryAddItem(
-    request: src_protos_action_pb.Item,
+    request: action_pb.Item,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.RpcError,
-               response: src_protos_action_pb.List) => void): grpcWeb.ClientReadableStream<src_protos_action_pb.List>;
+               response: action_pb.List) => void): grpcWeb.ClientReadableStream<action_pb.List>;
 
   unaryAddItem(
-    request: src_protos_action_pb.Item,
+    request: action_pb.Item,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.RpcError,
-               response: src_protos_action_pb.List) => void) {
+               response: action_pb.List) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -79,17 +82,17 @@ export class ToDoServiceClient {
   methodDescriptorServerStreamingSubList = new grpcWeb.MethodDescriptor(
     '/AiiiGRPC.ToDoService/ServerStreamingSubList',
     grpcWeb.MethodType.SERVER_STREAMING,
-    src_protos_action_pb.Filter,
-    src_protos_action_pb.Item,
-    (request: src_protos_action_pb.Filter) => {
+    action_pb.Filter,
+    action_pb.Item,
+    (request: action_pb.Filter) => {
       return request.serializeBinary();
     },
-    src_protos_action_pb.Item.deserializeBinary
+    action_pb.Item.deserializeBinary
   );
 
   serverStreamingSubList(
-    request: src_protos_action_pb.Filter,
-    metadata?: grpcWeb.Metadata): grpcWeb.ClientReadableStream<src_protos_action_pb.Item> {
+    request: action_pb.Filter,
+    metadata?: grpcWeb.Metadata): grpcWeb.ClientReadableStream<action_pb.Item> {
     return this.client_.serverStreaming(
       this.hostname_ +
         '/AiiiGRPC.ToDoService/ServerStreamingSubList',

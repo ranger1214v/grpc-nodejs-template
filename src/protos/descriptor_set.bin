@@ -1,0 +1,34 @@
+
+¾
+google/protobuf/empty.protogoogle.protobuf"
+EmptyB}
+com.google.protobufB
+EmptyProtoPZ.google.golang.org/protobuf/types/known/emptypbø¢GPBªGoogle.Protobuf.WellKnownTypesbproto3
+Ú
+src/protos/action.protoAiiiGRPCgoogle/protobuf/empty.proto"J
+Item
+name (	Rname
+price (Rprice
+message (	Rmessage",
+List$
+items (2.AiiiGRPC.ItemRitems"H
+Filter
+name (	Rname
+price (Rprice
+opStr (	RopStr"
+	Calculate
+data (	Rdata"F
+
+CircleInfo
+	colorCode (	R	colorCode
+x (Rx
+y (Ry"H
+CircleInfoList6
+circleInfos (2.AiiiGRPC.CircleInfoRcircleInfos2˜
+ToDoService.
+UnaryAddItem.AiiiGRPC.Item.AiiiGRPC.ListB
+ClientStreamingAddItem.AiiiGRPC.Item.google.protobuf.Empty(<
+ServerStreamingSubList.AiiiGRPC.Filter.AiiiGRPC.Item0E
+BidirectionalStreamingAsyncList.AiiiGRPC.Item.AiiiGRPC.List(0F
+ClientStreamingCalculate.AiiiGRPC.Calculate.AiiiGRPC.Calculate(H
+BidiCircleInfoData.AiiiGRPC.CircleInfo.AiiiGRPC.CircleInfoList(0bproto3

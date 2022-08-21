@@ -75,3 +75,67 @@ export namespace Filter {
   }
 }
 
+export class Calculate extends jspb.Message {
+  getData(): string;
+  setData(value: string): Calculate;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Calculate.AsObject;
+  static toObject(includeInstance: boolean, msg: Calculate): Calculate.AsObject;
+  static serializeBinaryToWriter(message: Calculate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Calculate;
+  static deserializeBinaryFromReader(message: Calculate, reader: jspb.BinaryReader): Calculate;
+}
+
+export namespace Calculate {
+  export type AsObject = {
+    data: string,
+  }
+}
+
+export class CircleInfo extends jspb.Message {
+  getColorcode(): string;
+  setColorcode(value: string): CircleInfo;
+
+  getX(): number;
+  setX(value: number): CircleInfo;
+
+  getY(): number;
+  setY(value: number): CircleInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CircleInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: CircleInfo): CircleInfo.AsObject;
+  static serializeBinaryToWriter(message: CircleInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CircleInfo;
+  static deserializeBinaryFromReader(message: CircleInfo, reader: jspb.BinaryReader): CircleInfo;
+}
+
+export namespace CircleInfo {
+  export type AsObject = {
+    colorcode: string,
+    x: number,
+    y: number,
+  }
+}
+
+export class CircleInfoList extends jspb.Message {
+  getCircleinfosList(): Array<CircleInfo>;
+  setCircleinfosList(value: Array<CircleInfo>): CircleInfoList;
+  clearCircleinfosList(): CircleInfoList;
+  addCircleinfos(value?: CircleInfo, index?: number): CircleInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CircleInfoList.AsObject;
+  static toObject(includeInstance: boolean, msg: CircleInfoList): CircleInfoList.AsObject;
+  static serializeBinaryToWriter(message: CircleInfoList, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CircleInfoList;
+  static deserializeBinaryFromReader(message: CircleInfoList, reader: jspb.BinaryReader): CircleInfoList;
+}
+
+export namespace CircleInfoList {
+  export type AsObject = {
+    circleinfosList: Array<CircleInfo.AsObject>,
+  }
+}
+

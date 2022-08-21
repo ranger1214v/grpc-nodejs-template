@@ -1,3 +1,4 @@
+import { BidiCircleInfoData } from "./functions/bidiCircleInfoData";
 import { BidirectionalStreamingAsyncList } from "./functions/bidirectional-streaming";
 import { ClientStreamingAddItem } from "./functions/client-streaming-add-item";
 import { ClientStreamingCalculate } from "./functions/client-streaming-calculate";
@@ -11,4 +12,5 @@ export {
     ClientStreamingCalculate,
     ServerStreamingSubList,
     BidirectionalStreamingAsyncList,
+    BidiCircleInfoData,
 }
