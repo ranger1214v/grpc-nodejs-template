@@ -6,7 +6,7 @@ import { ClientStreamingAddItem } from './implementations/client/functions/clien
 import { ServerStreamingSubList } from './implementations/client/functions/server-streaming-sub-list';
 import { BidirectionalStreamingAsyncList } from './implementations/client/functions/bidirectional-streaming';
 import { UnaryAddItem } from './implementations/client/functions/unary-add-item';
-import { ClientStreamingCalculate } from './implementations/client/functions/client-streaming-calculate';
+import { environment } from './environments/environment';
 
 async function main() {
 
@@ -28,17 +28,12 @@ async function main() {
         });
     const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
 
-    const client = new toDoProto.ToDoService(argv.host || `0.0.0.0`, grpcjs.credentials
-    .createInsecure());
-    // .createSsl());
+    const host = argv.host || `${environment.serverHost}:${environment.serverPort}`;
+    const client = new toDoProto.ToDoService(host, /0.0.0.0/.test(host) ? grpcjs.credentials.createInsecure() : grpcjs.credentials.createSsl()); // 連接遠端時使用 grpcjs.credentials.createSsl() , 本地測試時使用 grpcjs.credentials.createInsecure()
 
     switch (argv.action) {
         case 'ClientStreamingAddItem':
             await ClientStreamingAddItem(client);
-            break;
-
-        case 'ClientStreamingCalculate':
-            await ClientStreamingCalculate(client);
             break;
 
         case 'ServerStreamingSubList':

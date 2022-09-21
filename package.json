@@ -3,9 +3,10 @@
     "version": "1.0.0",
     "description": "grpc-nodejs-template",
     "scripts": {
+        "grpc-gen": "protoc --plugin='protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto' --ts_out='./' ./src/protos/action.proto",
+        "build": "tsc && copyfiles -u 1 src/protos/** lib/src/",
         "start:server": "node lib/server.js",
         "start:client": "node lib/client.js",
-        "build": "copyfiles -u 1 src/protos/** lib/src/ && tsc",
         "copy": "copyfiles -u 1 src/protos/** lib/src/"
     },
     "author": "",
@@ -45,7 +46,7 @@
         "@types/uuid": "3.4.6",
         "@types/google-protobuf": "3.15.6",
         "@types/minimist": "1.2.2",
-        "@types/prompts":"2.0.14",
+        "@types/prompts": "2.0.14",
         "typescript": "^3.9.9",
         "copyfiles": "2.4.1"
     }

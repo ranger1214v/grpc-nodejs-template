@@ -2,7 +2,6 @@ import { Item } from "../../../protos/action";
 import * as prompts from 'prompts';
 
 export const ClientStreamingAddItem = async (client: any) => {
-    // console.log('Client: ClientStreamingAddItem start');
     console.log('歡迎來到 Ranger 的聊天室');
 
     const clientCall = client.ClientStreamingAddItem((error: any, response: any) => console.log({ error, response }));
@@ -24,7 +23,7 @@ export const ClientStreamingAddItem = async (client: any) => {
             break;
         }
 
-        const item: Item = { name: responseName.value, price: 0, message: responseText.value };
+        const item: Item = { name: responseName.value, message: responseText.value };
         clientCall.write(item);
     }
 
