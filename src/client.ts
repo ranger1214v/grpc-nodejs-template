@@ -29,7 +29,7 @@ async function main() {
     const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
 
     const host = argv.host || `${environment.serverHost}:${environment.serverPort}`;
-    const client = new toDoProto.ToDoService(host, /0.0.0.0/.test(host) ? grpcjs.credentials.createInsecure() : grpcjs.credentials.createSsl()); // 連接遠端時使用 grpcjs.credentials.createSsl() , 本地測試時使用 grpcjs.credentials.createInsecure()
+    const client = new toDoProto.ToDoService(host, /0.0.0.0|0.tcp.jp.ngrok.io/.test(host) ? grpcjs.credentials.createInsecure() : grpcjs.credentials.createSsl()); // 連接遠端時使用 grpcjs.credentials.createSsl() , 本地測試時使用 grpcjs.credentials.createInsecure()
 
     switch (argv.action) {
         case 'ClientStreamingAddItem':
