@@ -1,4 +1,4 @@
 export const environment = {
-  serverHost: 'localhost',
+  serverHost: '0.0.0.0',
   serverPort: '443',
 };

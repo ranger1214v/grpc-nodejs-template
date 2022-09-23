@@ -2,14 +2,16 @@
  基於 GRPC 協定的示例
 
 ---
-### 執行步驟
-1. ``` npm i ```
-2. ``` npm run build ```
-3. 建立 server 端 ``` npm run start:server ```
-4.
+## 初始步驟
+   1. `npm i` 
+   2. `npm run grpc-gen`  **編譯 proto 檔案**
+   3. `npm build`
+   4. `npm start:server`
+
+## 測試方法   
  ```  
 npm run start:client -- --action=UnaryAddItem \
 --name=ranger  \
 --message=6666 \
---host=0.0.0.0:433
+--host=0.0.0.0:443
 ```

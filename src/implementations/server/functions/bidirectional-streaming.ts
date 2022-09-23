@@ -1,20 +1,40 @@
 import { ServerWritableStream } from "grpc";
-import { Filter, Item } from '../../../protos/action';
-import { messageItem$ } from '../../../cache/list';
+import { Item } from '../../../protos/action';
+import { messageItem$, messageList$ } from '../../../cache/list';
+import { Empty } from "../../../../google/protobuf/empty";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
+let list: Item[] = [];
 
-export const BidirectionalStreamingAsyncList = async (call: ServerWritableStream<Filter>) => {
+messageList$.subscribe((items) => list = items);
+
+export const BidirectionalStreamingAsyncList = async (call: ServerWritableStream<Empty>) => {
+
     call.on('data', (data: Item) => {
-        console.log('BidirectionalStreamingAsyncList =>', data)
+        console.log('Server: BidirectionalStreamingAsyncList =>', data);
         messageItem$.next(data);
-        main();
     });
 
     call.on('end', () => {
-        console.log('BidirectionalStreamingAsyncList => 連線結束');
+        console.log('Server: BidirectionalStreamingAsyncList => end!!');
     });
 
-    async function main() {
-        messageItem$.subscribe(item => call.write({ items: [item] }));
+    const destroy$ = new Subject();
+    for (const item of list) {
+        call.write(item);
     }
+
+    messageItem$.pipe(
+        takeUntil(destroy$),
+    ).subscribe(item => {
+        console.log('item!! =>', item);
+        call.write(item);
+    });
+
+    call.on('close', () => { // 連線關閉時 取消訂閱
+        console.log('erver: BidirectionalStreamingAsyncList => close!!');
+        destroy$.next();
+        destroy$.complete();
+    });
 }
