@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "description": "grpc-nodejs-template",
     "scripts": {
-        "grpc-gen": "./node_modules/.bin/grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto  --ts_proto_out=./compiled_proto --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false --proto_path=./src/protos ./src/protos/action.proto",
+        "gen-proto": "./node_modules/.bin/grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto  --ts_proto_out=./src/protos --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false --proto_path=./src/protos ./src/protos/action.proto",
         "build": "tsc && copyfiles -u 1 src/protos/** lib/src/",
-        "start:server": "node lib/src/server.js",
-        "start:client": "node lib/src/client.js",
+        "start:server": "node lib/server.js",
+        "start:client": "node lib/client.js",
         "copy": "copyfiles -u 1 src/protos/** lib/src/"
     },
     "author": "",
@@ -15,6 +15,8 @@
     "dependencies": {
         "@grpc/grpc-js": "^1.7.1",
         "@grpc/proto-loader": "^0.7.3",
+        "nice-grpc-common": "^2.0.0",
+        "nice-grpc": "^2.0.0",
         "body-parser": "^1.19.0",
         "connect-timeout": "1.9.0",
         "cors": "^2.8.5",
@@ -30,6 +32,7 @@
         "request": "2.88.2",
         "request-promise": "4.2.5",
         "rxjs": "~6.6.0",
+        "ix": "5.0.0",
         "uuid": "3.3.3"
     },
     "devDependencies": {
