@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "grpc-nodejs-template",
     "scripts": {
-        "gen-proto": "./node_modules/.bin/grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto  --ts_proto_out=./src/protos --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false --proto_path=./src/protos ./src/protos/action.proto",
+        "protoc-gen": "./node_modules/.bin/grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto  --ts_proto_out=./src/protos --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false --proto_path=./src/protos ./src/protos/action.proto",
         "build": "tsc && copyfiles -u 1 src/protos/** lib/src/",
         "start:server": "node lib/server.js",
         "start:client": "node lib/client.js",
