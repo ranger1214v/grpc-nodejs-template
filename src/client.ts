@@ -7,6 +7,7 @@ import { ServerStreamingSubList } from './implementations/client/functions/serve
 import { BidirectionalStreamingAsyncList } from './implementations/client/functions/bidirectional-streaming';
 import { UnaryAddItem } from './implementations/client/functions/unary-add-item';
 import { environment } from './environments/environment';
+import { protobufPackage } from './protos/action';
 
 async function main() {
 
@@ -26,7 +27,7 @@ async function main() {
             defaults: true,
             oneofs: true
         });
-    const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
+    const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition)[protobufPackage];
 
     const host = argv.host || `${environment.serverHost}:${environment.serverPort}`;
     const client = new toDoProto.ToDoService(host, /0.0.0.0|0.tcp.jp.ngrok.io/.test(host) ? grpcjs.credentials.createInsecure() : grpcjs.credentials.createSsl()); // 連接遠端時使用 grpcjs.credentials.createSsl() , 本地測試時使用 grpcjs.credentials.createInsecure()

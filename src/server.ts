@@ -1,9 +1,11 @@
+process.env.UV_THREADPOOL_SIZE = '8';
+
 import * as path from 'path';
-import * as grpc from 'grpc';
-// import * as fs from 'fs';
+import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
 import * as toDoServiceImplementations from './implementations/server/todoService';
 import { environment } from './environments/environment';
+import { protobufPackage } from './protos/action';
 
 async function main() {
 
@@ -19,7 +21,7 @@ async function main() {
             defaults: true,
             oneofs: true
         });
-    const actionProto: any = grpc.loadPackageDefinition(packageDefinition).AiiiGRPC;
+    const actionProto: any = grpc.loadPackageDefinition(packageDefinition)[protobufPackage];
 
     server.addService(actionProto.ToDoService.service, toDoServiceImplementations);
 
