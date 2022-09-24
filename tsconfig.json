@@ -5,7 +5,7 @@
     "noUnusedLocals": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6",
+    "target": "esnext",
     "typeRoots": [
       "node_modules/@types",
       "./@types"

@@ -1,30 +1,25 @@
-import * as path from 'path';
-import * as grpc from 'grpc';
-// import * as fs from 'fs';
-import * as protoLoader from '@grpc/proto-loader';
-import * as toDoServiceImplementations from './implementations/server/todoService';
+process.env.UV_THREADPOOL_SIZE = '8';
+import { createServer } from 'nice-grpc';
 import { environment } from './environments/environment';
 
-async function main() {
+import {
+    ToDoServiceServiceImplementation,
+    ToDoServiceDefinition,
+} from './protos/action';
+import { healthCheck } from './implementations/server/health-check';
+import { unaryAddItem } from './implementations/server/unary-add-item';
+import { serverStreamingSubList } from './implementations/server/server-streaming-sub-list';
+import { clientStreamingAddItem } from './implementations/server/client-streaming-add-item';
+import { bidirectionalStreamingAsyncList } from './implementations/server/bidirectional-streaming';
 
-    const server = new grpc.Server();
+const toDoServiceImpl: ToDoServiceServiceImplementation = {
+    unaryAddItem,
+    clientStreamingAddItem,
+    serverStreamingSubList,
+    bidirectionalStreamingAsyncList,
+    healthCheck,
+};
 
-    const PROTO_PATH = path.join(__dirname, './protos/action.proto');
-    const packageDefinition = protoLoader.loadSync(
-        PROTO_PATH,
-        {
-            keepCase: true,
-            longs: String,
-            enums: String,
-            defaults: true,
-            oneofs: true
-        });
-    const actionProto: any = grpc.loadPackageDefinition(packageDefinition).AiiiGRPC;
-
-    server.addService(actionProto.ToDoService.service, toDoServiceImplementations);
-
-    server.bind(`0.0.0.0:${environment.serverPort}`, grpc.ServerCredentials.createInsecure());
-    server.start();
-}
-
-main();
+const server = createServer();
+server.add(ToDoServiceDefinition, toDoServiceImpl);
+server.listen(`${environment.serverHost}:${environment.serverPort}`);

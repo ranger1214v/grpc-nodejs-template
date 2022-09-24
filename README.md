@@ -3,7 +3,7 @@
 
 ---
 ## 初始步驟
-   1. `npm i` 
+   1. `npm i`  ( 若您的電腦使用 Apple Silicon 處理器，則需要另加參數 --target_arch=x64)
    2. `npm run grpc-gen`  **編譯 proto 檔案**
    3. `npm build`
    4. `npm start:server`

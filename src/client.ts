@@ -1,54 +1,52 @@
-import * as path from 'path';
-import * as protoLoader from '@grpc/proto-loader';
-import * as grpcjs from '@grpc/grpc-js';
+import { createChannel, createClient } from 'nice-grpc';
 import * as parseArgs from 'minimist';
-import { ClientStreamingAddItem } from './implementations/client/functions/client-streaming-add-item';
-import { ServerStreamingSubList } from './implementations/client/functions/server-streaming-sub-list';
-import { BidirectionalStreamingAsyncList } from './implementations/client/functions/bidirectional-streaming';
-import { UnaryAddItem } from './implementations/client/functions/unary-add-item';
+import {
+    ToDoServiceClient,
+    ToDoServiceDefinition,
+} from './protos/action';
 import { environment } from './environments/environment';
+import { unaryAddItem } from './implementations/client/unary-add-item';
+import { healthCheck } from './implementations/client/health-check';
+import { clientStreamingAddItem } from './implementations/client/client-streaming-add-item';
+import { serverStreamingSubList } from './implementations/client/server-streaming-sub-list';
+import { bidirectionalStreamingAsyncList } from './implementations/client/bidirectional-streaming';
 
-async function main() {
+const channel = createChannel(`${environment.serverHost}:${environment.serverPort}`);
+
+const client: ToDoServiceClient = createClient(
+    ToDoServiceDefinition,
+    channel,
+);
+
+const main = async () => {
 
     const argv = parseArgs(process.argv, {
         string: 'db_path'
     });
 
-    // console.log('argv!! => ', argv);
-
-    const PROTO_PATH = path.join(__dirname, './protos/action.proto');
-    const packageDefinition = protoLoader.loadSync(
-        PROTO_PATH,
-        {
-            keepCase: true,
-            longs: String,
-            enums: String,
-            defaults: true,
-            oneofs: true
-        });
-    const toDoProto: any = grpcjs.loadPackageDefinition(packageDefinition).AiiiGRPC;
-
-    const host = argv.host || `${environment.serverHost}:${environment.serverPort}`;
-    const client = new toDoProto.ToDoService(host, /0.0.0.0|0.tcp.jp.ngrok.io/.test(host) ? grpcjs.credentials.createInsecure() : grpcjs.credentials.createSsl()); // 連接遠端時使用 grpcjs.credentials.createSsl() , 本地測試時使用 grpcjs.credentials.createInsecure()
-
     switch (argv.action) {
         case 'ClientStreamingAddItem':
-            await ClientStreamingAddItem(client);
+            clientStreamingAddItem(client);
             break;
 
         case 'ServerStreamingSubList':
-            await ServerStreamingSubList(client);
+            serverStreamingSubList(client);
             break;
 
         case 'BidirectionalStreamingAsyncList':
-            await BidirectionalStreamingAsyncList(client);
+            bidirectionalStreamingAsyncList(client);
             break;
 
         case 'UnaryAddItem':
+            unaryAddItem(client, argv);
+            break;
+
+        case 'HealthCheck':
         default:
-            await UnaryAddItem(client, argv);
+            healthCheck(client);
+
     }
 
-}
+};
 
 main();
