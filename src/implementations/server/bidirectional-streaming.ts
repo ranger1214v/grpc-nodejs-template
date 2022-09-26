@@ -18,7 +18,7 @@ export async function* bidirectionalStreamingAsyncList(
         }
     })(),
 
-    yield* from(messageItem$).pipe(withAbort(context.signal)),
+    yield* from(messageItem$).pipe(withAbort(context.signal));
     
     console.log('BidirectionalStreamingAsyncList => end!!');
 }

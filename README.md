@@ -5,6 +5,7 @@
 ## 初始步驟
    1. `npm i`  ( 若您的電腦使用 Apple Silicon 處理器，則需要另加參數 --target_arch=x64)
    2. `npm run protoc-gen`  **編譯 proto 檔案**
+   3. `npm run protoc-reflection`  **建立 reflection 檔案，為此 proto 提供公開的參考**
    3. `npm build`
    4. `npm start:server`
 
